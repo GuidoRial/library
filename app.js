@@ -46,7 +46,7 @@ const cleanForm = function () {
     $title.value = "";
 }
 
-const changeReadStatus = (Book) => {
+const changeReadStatus = function(Book) {
     if (myLibrary[Book].readStatus === "read") {
         myLibrary[Book].readStatus = "unread";
     }
