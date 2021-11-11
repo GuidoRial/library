@@ -21,7 +21,7 @@ const bookTable = document.querySelector("#bookTable")
 const $title = document.querySelector("#title");
 const $author = document.querySelector("#author");
 const $status = document.querySelector("#status");
-
+const statusBtn = document.getElementById("#statusBtn");
 const table = document.querySelector("table").addEventListener("click", (e) => {
     
     if (e.currentTarget.innerText == "delete") {
@@ -46,12 +46,28 @@ const cleanForm = function () {
     $title.value = "";
 }
 
+const changeReadStatus = (Book) => {
+    if (myLibrary[Book].readStatus === "read") {
+        myLibrary[Book].readStatus = "unread";
+    }
+    else {
+        myLibrary[Book].readStatus = "unread";
+    }
+    render();
+}
+
 //Event listener that changes the read status or deletes a book
 //Still can't manage to change read status
 document.querySelector("#bookTable").addEventListener("click", (e) => {
     deleteBook(e.target);
+    if (e.target.classList.contains("status-button")) {
+        changeReadStatus(myLibrary[findBook(myLibrary, Book.title)]);
+    }
     cleanForm();
 })
+
+
+
 
 //function to delete books from the array
 function deleteBook(el) {
