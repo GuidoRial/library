@@ -2,11 +2,15 @@ function Book(title, author, readStatus) {
     this.title = title;
     this.author = author;
     this.readStatus = readStatus;
+
+    this.changeReadStatus = function () {
+        
+    }
 }
 
-const bookTitle = document.querySelector("#title");
-const bookAuthor = document.querySelector("#author");
-const bookStatus = document.querySelector("#status");
+//Array to store books
+let myLibrary = [];
+
 const submitBtn = document.querySelector("#submitBtn");
 const readStatusBtn = document.getElementById("#statusBtn")
 const deleteBtn = document.querySelector("#deleteBtn");
@@ -17,21 +21,29 @@ const form = document.querySelector("form").addEventListener("submit", (e) => {
     render();
     cleanForm();
 })
+
 const bookTable = document.querySelector("#bookTable")
 const $title = document.querySelector("#title");
 const $author = document.querySelector("#author");
 const $status = document.querySelector("#status");
-const statusBtn = document.getElementById("#statusBtn");
-const table = document.querySelector("table").addEventListener("click", (e) => {
-    
-    if (e.currentTarget.innerText == "delete") {
-        deleteBook(Book.title);
-    }
-    render();
-})
+const table = document.querySelector("table");
 
-//Array to store books
-let myLibrary = [];
+//Displays the book table
+function render() {
+    bookTable.innerHTML = "";
+    myLibrary.forEach((book) => {
+        const htmlBook =`
+        <tr>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td><button class ="status-button" id="statusBtn">${book.readStatus}</button></td>
+            <td><button class="delete" id="deleteBtn">delete</button></td>
+        </tr>
+      `;
+      bookTable.insertAdjacentHTML("afterbegin", htmlBook);
+    });
+}
+
 
 const addBookToLibrary = function () {
     if ($title.value == "" || $author.value == "") {
@@ -45,29 +57,6 @@ const cleanForm = function () {
     $author.value = "";
     $title.value = "";
 }
-
-const changeReadStatus = function(Book) {
-    if (myLibrary[Book].readStatus === "read") {
-        myLibrary[Book].readStatus = "unread";
-    }
-    else {
-        myLibrary[Book].readStatus = "unread";
-    }
-    render();
-}
-
-//Event listener that changes the read status or deletes a book
-//Still can't manage to change read status
-document.querySelector("#bookTable").addEventListener("click", (e) => {
-    deleteBook(e.target);
-    if (e.target.classList.contains("status-button")) {
-        changeReadStatus(myLibrary[findBook(myLibrary, Book.title)]);
-    }
-    cleanForm();
-})
-
-
-
 
 //function to delete books from the array
 function deleteBook(el) {
@@ -88,21 +77,46 @@ function findBook (myLibrary, title) {
         }
 }
 
-//Displays the book table
-function render() {
-    bookTable.innerHTML = "";
-    myLibrary.forEach((book) => {
-        const htmlBook =`
-        <tr>
-            <td>${book.title}</td>
-            <td>${book.author}</td>
-            <td><button class ="status-button" id="statusBtn">${book.readStatus}</button></td>
-            <td><button class="delete" id="deleteBtn">delete</button></td>
-        </tr>
-      `;
-      bookTable.insertAdjacentHTML("afterbegin", htmlBook);
-    });
+const changeReadStatus = function(Book) {
+    if (myLibrary[Book].readStatus === "read") {
+        myLibrary[Book].readStatus = "unread";
+    }
+    else {
+        myLibrary[Book].readStatus = "unread";
+    }
+    render();
 }
+
+
+table.addEventListener("click", (e) => {
+    if (e.currentTarget.innerText == "delete") {
+        deleteBook(Book.title);
+    }
+    render();
+})
+
+
+
+
+
+
+
+//Event listener that changes the read status or deletes a book
+//Still can't manage to change read status
+document.querySelector("#bookTable").addEventListener("click", (e) => {
+    deleteBook(e.target);
+    if (e.target.classList.contains("status-button")) {
+        changeReadStatus(myLibrary[findBook(myLibrary, Book.title)]);
+    } else {
+        changeReadStatus(findBook(myLibrary, e.target.innerText));
+    }
+    cleanForm();
+})
+
+
+
+
+
 
 
 const anotherBook = new Book("Weird Book", "Guido Rial", "read")
@@ -111,4 +125,6 @@ const astrophysicsForPeopleInAHurry = new Book("Astrophysics for People in a Hur
 myLibrary.push(anotherBook);
 myLibrary.push(astrophysicsForPeopleInAHurry);
 
+
 render();
+
