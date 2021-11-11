@@ -3,8 +3,15 @@ function Book(title, author, readStatus) {
     this.author = author;
     this.readStatus = readStatus;
 
-    this.changeReadStatus = function () {
-        
+}
+
+Book.prototype.changeReadStatus = function (e) {
+    if (e.target.classList.contains("status-button")) {
+        e.target.textContent = "unread";
+        this.readStatus = unread;
+    } else {
+        e.target.textContent = "read";
+        this.readStatus = read;
     }
 }
 
@@ -27,6 +34,8 @@ const $title = document.querySelector("#title");
 const $author = document.querySelector("#author");
 const $status = document.querySelector("#status");
 const table = document.querySelector("table");
+
+
 
 //Displays the book table
 function render() {
@@ -77,54 +86,16 @@ function findBook (myLibrary, title) {
         }
 }
 
-const changeReadStatus = function(Book) {
-    if (myLibrary[Book].readStatus === "read") {
-        myLibrary[Book].readStatus = "unread";
-    }
-    else {
-        myLibrary[Book].readStatus = "unread";
-    }
-    render();
-}
+
 
 
 table.addEventListener("click", (e) => {
     if (e.currentTarget.innerText == "delete") {
         deleteBook(Book.title);
+    } else if (e.currentTarget.classList.contains("status-button")) {
+        newBook.changeReadStatus(e);
+        console.log("hi");
     }
     render();
 })
-
-
-
-
-
-
-
-//Event listener that changes the read status or deletes a book
-//Still can't manage to change read status
-document.querySelector("#bookTable").addEventListener("click", (e) => {
-    deleteBook(e.target);
-    if (e.target.classList.contains("status-button")) {
-        changeReadStatus(myLibrary[findBook(myLibrary, Book.title)]);
-    } else {
-        changeReadStatus(findBook(myLibrary, e.target.innerText));
-    }
-    cleanForm();
-})
-
-
-
-
-
-
-
-const anotherBook = new Book("Weird Book", "Guido Rial", "read")
-const astrophysicsForPeopleInAHurry = new Book("Astrophysics for People in a Hurry", "Neil deGrasse Tyson", "unread");
-
-myLibrary.push(anotherBook);
-myLibrary.push(astrophysicsForPeopleInAHurry);
-
-
-render();
 
