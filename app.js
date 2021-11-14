@@ -35,8 +35,6 @@ const $author = document.querySelector("#author");
 const $status = document.querySelector("#status");
 const table = document.querySelector("table");
 
-
-
 //Displays the book table
 function render() {
     bookTable.innerHTML = "";
@@ -52,7 +50,6 @@ function render() {
       bookTable.insertAdjacentHTML("afterbegin", htmlBook);
     });
 }
-
 
 const addBookToLibrary = function () {
     if ($title.value == "" || $author.value == "") {
@@ -86,9 +83,6 @@ function findBook (myLibrary, title) {
         }
 }
 
-
-
-
 table.addEventListener("click", (e) => {
     if (e.currentTarget.innerText == "delete") {
         deleteBook(Book.title);
@@ -99,3 +93,16 @@ table.addEventListener("click", (e) => {
     render();
 })
 
+//Event listener that changes the read status or deletes a book
+document.querySelector("#bookTable").addEventListener("click", (e) => {
+    deleteBook(e.target);
+    cleanForm();
+})
+
+const anotherBook = new Book("Weird Book", "Guido Rial", "read")
+const astrophysicsForPeopleInAHurry = new Book("Astrophysics for People in a Hurry", "Neil deGrasse Tyson", "unread");
+
+myLibrary.push(anotherBook);
+myLibrary.push(astrophysicsForPeopleInAHurry);
+
+render();
