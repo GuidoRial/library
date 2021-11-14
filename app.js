@@ -2,19 +2,7 @@ function Book(title, author, readStatus) {
     this.title = title;
     this.author = author;
     this.readStatus = readStatus;
-
 }
-
-Book.prototype.changeReadStatus = function (e) {
-    if (e.target.classList.contains("status-button")) {
-        e.target.textContent = "unread";
-        this.readStatus = unread;
-    } else {
-        e.target.textContent = "read";
-        this.readStatus = read;
-    }
-}
-
 //Array to store books
 let myLibrary = [];
 
@@ -34,6 +22,14 @@ const $title = document.querySelector("#title");
 const $author = document.querySelector("#author");
 const $status = document.querySelector("#status");
 const table = document.querySelector("table");
+
+table.addEventListener("click", (e) => {
+    const currentTarget = e.target.parentNode.parentNode.childNodes[1];
+    if (e.target.classList.contains("status-button")) {
+      changeReadStatus(findBook(myLibrary, currentTarget.innerText));
+    }
+    render();
+  });
 
 //Displays the book table
 function render() {
@@ -72,6 +68,18 @@ function deleteBook(el) {
     }
 }
 
+function targetBook (el) {
+    if (el.classList.contains("status-button")) {
+        console.log("hi");
+    }
+}
+
+function changeReadStatus (Book) {
+    if (Book.readStatus === "read") {
+        Book.readStatus = "unread";
+    } else Book.readStatus = "read";
+}
+
 //Returns the index of the book I gave it
 function findBook (myLibrary, title) {
     if (myLibrary.length === 0 || myLibrary === null) {
@@ -83,18 +91,10 @@ function findBook (myLibrary, title) {
         }
 }
 
-table.addEventListener("click", (e) => {
-    if (e.currentTarget.innerText == "delete") {
-        deleteBook(Book.title);
-    } else if (e.currentTarget.classList.contains("status-button")) {
-        newBook.changeReadStatus(e);
-        console.log("hi");
-    }
-    render();
-})
 
 //Event listener that changes the read status or deletes a book
-document.querySelector("#bookTable").addEventListener("click", (e) => {
+bookTable.addEventListener("click", (e) => {
+
     deleteBook(e.target);
     cleanForm();
 })
