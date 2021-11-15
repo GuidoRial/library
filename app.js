@@ -53,13 +53,14 @@ let toggleReadStatus = function (Book){
 function changeReadStatus (el) {
     if (el.classList.contains("status-button")) {
         console.log('hi');
-        toggleReadStatus(myLibrary[findBook(myLibrary, Book.title)]); 
+        toggleReadStatus(myLibrary.find(Book => Book.title === Book.title)); // this works fine but only on the [0]
+
         render();
     }
 }
 
+//toggleReadStatus(myLibrary[findBook(myLibrary, Book.title)]); //this didn't work, it says [cannot read properties of undefined "reading readStatus"
 
-//toggleReadStatus(myLibrary.find(Book => Book.title === Book.title)); // this works fine but only on the [0]
 
 const addBookToLibrary = function () {
     if ($title.value == "" || $author.value == "") {
