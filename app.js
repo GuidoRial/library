@@ -42,6 +42,8 @@ function render() {
     });
 }
 
+
+
 //changeReadStatus(myLibrary.find(Book => Book.title == "Weird Book"))
 let toggleReadStatus = function (Book){
     if (Book.readStatus === "read") {
@@ -51,10 +53,13 @@ let toggleReadStatus = function (Book){
 function changeReadStatus (el) {
     if (el.classList.contains("status-button")) {
         console.log('hi');
-        toggleReadStatus(myLibrary.find(Book => Book.title = Book.title)); 
+        toggleReadStatus(myLibrary[findBook(myLibrary, Book.title)]); 
         render();
     }
 }
+
+
+//toggleReadStatus(myLibrary.find(Book => Book.title === Book.title)); // this works fine but only on the [0]
 
 const addBookToLibrary = function () {
     if ($title.value == "" || $author.value == "") {
