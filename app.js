@@ -78,25 +78,11 @@ render();
 
 
 //This console.logs the book titles
-//const bookTitles = document.querySelectorAll("[data-title]");
-let deleteBtn = document.querySelectorAll(".delete");
-deleteBtn.addEventListener("click", deleteAssociatedBook())
 
-function deleteAssociatedBook(event) {
-    const associatedBookTitle = event.target.dataset.bookTitle;
-  
-    console.log(
-      "I am a button and my ID is associated with a book to be deleted."
-    );
-  
-    console.log("Button title is: " + associatedBookTitle);
-  
-    const bookToBeDeleted = document.querySelector(
-      `[data-title="${associatedBookTitle}"]`
-    );
-  
-    console.log(bookToBeDeleted);
-  }
+let deleteBtn = document.querySelectorAll(".delete");
+let readStatusBtn = document.querySelectorAll(".status-button")
+
+
 
 //bookTitles.addEventListener("click", deleteAssociatedBook());
 
@@ -113,18 +99,9 @@ function deleteAssociatedBook(event) {
 //iterateBooks();
 
 
-//returns the index of the book
-const findBook = function (myLibrary, title) {
-    if (myLibrary.length === 0 || myLibrary === null) {
-        return
-    }
-    for (Book of myLibrary)
-        if (Book.title === title) {
-            return myLibrary.indexOf(Book);
-        }
-} 
 
-//let readStatusBtn = document.getElementsByClassName(".status-button")
+
+
 
 
 //
@@ -138,20 +115,50 @@ const findBook = function (myLibrary, title) {
 //    }
 //})
 
-//deleteBtn.forEach(button => {
-//    button.addEventListener("click", (e) => {
-        //Tengo un array con las key value de Book.title
-        //Cuando apreto delete quiero que se compare todos los Book.title con los el.innerText de iterateBooks() correspondiente a la tabla que toque, si coincide es .deleteBook().render(); y listo
 
 
+deleteBtn.forEach(button => {
+    button.addEventListener("click", (e) => {
+        //Returns the index of the book I gave it
+    function findBook (myLibrary, title) {
+        if (myLibrary.length === 0 || myLibrary === null) {
+            return;
+        }
+        for (Book of myLibrary)
+            if (Book.title === title) {
+                return myLibrary.indexOf(Book)
+            }
+    }
+        
+        let associatedBookTitle = e.target.dataset.bookTitle;
+        let bookToBeDeleted = document.querySelector(`[data-title="${associatedBookTitle}"]`);
+        console.log("button title is: " + associatedBookTitle);
+        console.log(bookToBeDeleted);
 
-//    })
-//})
+        myLibrary[findBook(myLibrary, associatedBookTitle)].deleteBook();
+        render();
+    });
+});
 
-//readStatusBtn.forEach(button => {
-//    button.addEventListener("click", (e) => {
-//        myLibrary.find(Book => Book.title === el.dataset.title).changeReadStatus();
-//        console.log("bye");
-//    })
-//})
+readStatusBtn.forEach(button => {
+    button.addEventListener("click", (e) => {
+        //Returns the index of the book I gave it
+    function findBook (myLibrary, title) {
+        if (myLibrary.length === 0 || myLibrary === null) {
+            return;
+        }
+        for (Book of myLibrary)
+            if (Book.title === title) {
+                return myLibrary.indexOf(Book)
+            }
+    }
+        
+        let associatedBookTitle = e.target.dataset.bookTitle;
+        let bookToBeDeleted = document.querySelector(`[data-title="${associatedBookTitle}"]`);
+        console.log("button title is: " + associatedBookTitle);
+        console.log(bookToBeDeleted);
 
+        myLibrary[findBook(myLibrary, associatedBookTitle)].changeReadStatus();
+        render();
+    });
+});
