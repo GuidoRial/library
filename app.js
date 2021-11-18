@@ -4,6 +4,7 @@ class Book {
         this.author = author;
         this.readStatus = readStatus;
     }
+    
     changeReadStatus () {
         if (this.readStatus === "read") {
             this.readStatus = "unread";
@@ -26,7 +27,7 @@ const addBookToLibrary = function () {
     myLibrary.push(newBook);
 }
 
-const anotherBook = new Book("Weird Book", "Guido Rial", "read")
+const anotherBook = new Book("Check out my GitHub", "GuidoRial", "unread")
 const astrophysicsForPeopleInAHurry = new Book("Astrophysics for People in a Hurry", "Neil deGrasse Tyson", "unread");
 const ulysses = new Book("Ulysses", "James Joyce", "unread");
 
@@ -41,6 +42,17 @@ const $author = document.querySelector("#author");
 const $status = document.querySelector("#status");
 const table = document.querySelector("table");
 
+//Returns the index of the book I gave it
+function findBook (myLibrary, title) {
+    if (myLibrary.length === 0 || myLibrary === null) {
+        return;
+    }
+    for (Book of myLibrary)
+        if (Book.title === title) {
+            return myLibrary.indexOf(Book)
+        }
+}
+
 //Displays the book table
 function render() {
     bookTable.innerHTML = "";
@@ -49,11 +61,35 @@ function render() {
         <tr>
             <td id="bookTitle" data-book-title="${book.title}">${book.title}</td>
             <td>${book.author}</td>
-            <td><button data-book-title="${book.title}" class ="status-button" id="statusBtn">${book.readStatus}</button></td>
-            <td><button data-book-title="${book.title}" class="delete" id="deleteBtn">delete</button></td>
+            <td><button data-book-title="${book.title}" class="status-button">${book.readStatus}</button></td>
+            <td><button data-book-title="${book.title}" class="delete">delete</button></td>
         </tr>
       `;
       bookTable.insertAdjacentHTML("afterbegin", htmlBook);
+    });
+
+    let deleteBtn = document.querySelectorAll(".delete");
+    let readStatusBtn = document.querySelectorAll(".status-button")
+
+    deleteBtn.forEach(button => {
+        button.addEventListener("click", (e) => {
+            //Both the button and the book title have a data attribute called [data-book-title="${book.title}"]
+            //This variable associates the data attributes you have both in the button and in the title and returns the book title
+            let associatedBookTitle = e.target.dataset.bookTitle;
+            //Then you can use it in a function to return it's position
+            console.log("button title is: " + associatedBookTitle);
+            myLibrary[findBook(myLibrary, associatedBookTitle)].deleteBook();
+            render();
+        });
+    });
+
+    readStatusBtn.forEach(button => {
+        button.addEventListener("click", (e) => {
+            let associatedBookTitle = e.target.dataset.bookTitle;
+            console.log("button title is: " + associatedBookTitle);
+            myLibrary[findBook(myLibrary, associatedBookTitle)].changeReadStatus();
+            render();
+        });
     });
 }
 
@@ -72,93 +108,3 @@ form.addEventListener("submit", (e) => {
 
 render();
 
-//de aca para abajo dudo, no andan los ultimos dos botones
-
-
-
-
-//This console.logs the book titles
-
-let deleteBtn = document.querySelectorAll(".delete");
-let readStatusBtn = document.querySelectorAll(".status-button")
-
-
-
-//bookTitles.addEventListener("click", deleteAssociatedBook());
-
-
-
-
-//returns the titles of all the books
-//const iterateBooks = function () {
-//    bookTitles.forEach(el => {
-//        console.log(el.innerText);
-//   })
-//}
-
-//iterateBooks();
-
-
-
-
-
-
-
-//
-
-//bookTable.addEventListener("click", (e) => {
-//    if (el.classList.contains("delete")) {
-//        console.log ("hi");
-//    }
-//    if (el.classList.contains("status-button")) {
-//        console.log("bye")
-//    }
-//})
-
-
-
-deleteBtn.forEach(button => {
-    button.addEventListener("click", (e) => {
-        //Returns the index of the book I gave it
-    function findBook (myLibrary, title) {
-        if (myLibrary.length === 0 || myLibrary === null) {
-            return;
-        }
-        for (Book of myLibrary)
-            if (Book.title === title) {
-                return myLibrary.indexOf(Book)
-            }
-    }
-        
-        let associatedBookTitle = e.target.dataset.bookTitle;
-        let bookToBeDeleted = document.querySelector(`[data-title="${associatedBookTitle}"]`);
-        console.log("button title is: " + associatedBookTitle);
-        console.log(bookToBeDeleted);
-
-        myLibrary[findBook(myLibrary, associatedBookTitle)].deleteBook();
-        render();
-    });
-});
-
-readStatusBtn.forEach(button => {
-    button.addEventListener("click", (e) => {
-        //Returns the index of the book I gave it
-    function findBook (myLibrary, title) {
-        if (myLibrary.length === 0 || myLibrary === null) {
-            return;
-        }
-        for (Book of myLibrary)
-            if (Book.title === title) {
-                return myLibrary.indexOf(Book)
-            }
-    }
-        
-        let associatedBookTitle = e.target.dataset.bookTitle;
-        let bookToBeDeleted = document.querySelector(`[data-title="${associatedBookTitle}"]`);
-        console.log("button title is: " + associatedBookTitle);
-        console.log(bookToBeDeleted);
-
-        myLibrary[findBook(myLibrary, associatedBookTitle)].changeReadStatus();
-        render();
-    });
-});
